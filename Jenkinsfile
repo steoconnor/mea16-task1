@@ -20,21 +20,35 @@ pipeline {
 
             steps {
 
-                sh 'docker build -t jenkins-flask .'
+                sh 'docker build -t steoconnor/jenkins-flask .'
 
-                sh 'docker build -t jenkins-nginx ./nginx'
+                sh 'docker build -t steoconnor/jenkins-nginx ./nginx'
 
             }
 
         }
 
+        stage('Push') {
+
+            steps {
+
+                sh '''
+                docker push steoconnor/jenkins-flask
+                docker push steoconnor/jenkins-nginx
+                '''
+
+            }
+
+        }
+
+
         stage('Deploy') {
 
             steps {
 
-                sh 'docker run -d --name flask-app --network jenkins-network jenkins-flask:latest'
+                sh 'docker run -d --name flask-app --network jenkins-network steoconnor/jenkins-flask:latest'
 
-                sh 'docker run -d -p 80:80 --name jenkins-nginx --network jenkins-network jenkins-nginx:latest'
+                sh 'docker run -d -p 80:80 --name jenkins-nginx --network jenkins-network steoconnor/jenkins-nginx:latest'
 
             }
 
