@@ -13,9 +13,9 @@ pipeline {
                 docker rm -f $(docker ps -qa) || true
                 docker network create jenkins-network || true
                 docker stop flask-app || echo "flask-app Not Running"
-                docker stop nginx || echo "nginx Not Running"
+                docker stop jenkins-nginx || echo "nginx Not Running"
                 docker rm flask-app || echo "flask-app Not Running"
-                docker rm nginx || echo "nginx Not Running"
+                docker rm jenkins-nginx || echo "nginx Not Running"
                 '''
 
             }
