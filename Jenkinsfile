@@ -20,9 +20,9 @@ pipeline {
 
             steps {
 
-                sh 'docker build -t flask-app .'
+                sh 'docker build -t jenkins-flask .'
 
-                sh 'docker build -t mynginx -f Dockerfile.nginx .'
+                sh 'docker build -t jenkins-nginx ./nginx'
 
             }
 
@@ -32,9 +32,9 @@ pipeline {
 
             steps {
 
-                sh 'docker run -d --name flask-app --network jenkins-network flask-app:latest'
+                sh 'docker run -d --name flask-app --network jenkins-network jenkins-flask:latest'
 
-                sh 'docker run -d -p 80:80 --name mynginx --network jenkins-network mynginx:latest'
+                sh 'docker run -d -p 80:80 --name jenkins-nginx --network jenkins-network jenkins-nginx:latest'
 
             }
 
