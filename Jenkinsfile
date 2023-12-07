@@ -20,9 +20,9 @@ pipeline {
 
             steps {
 
-                sh 'docker build -t steoconnor/jenkins-flask .'
+                sh 'docker build -t steoconnor/jenkins-flask:latest -t steoconnor/jenkins-flask:v{BUILD_NUMBER} .'
 
-                sh 'docker build -t steoconnor/jenkins-nginx ./nginx'
+                sh 'docker build -t steoconnor/jenkins-nginx -t steoconnor/jenkins-flask:v{BUILD_NUMBER} ./nginx'
 
             }
 
@@ -33,8 +33,10 @@ pipeline {
             steps {
 
                 sh '''
-                docker push steoconnor/jenkins-flask
-                docker push steoconnor/jenkins-nginx
+                docker push steoconnor/jenkins-flask:latest
+                docker push steoconnor/jenkins-nginx:latest
+                docker push steoconnor/jenkins-flask:v{BUILD_NUMBER}
+                docker push steoconnor/jenkins-nginx:v{BUILD_NUMBER}
                 '''
 
             }
