@@ -8,12 +8,10 @@ pipeline {
 
             steps {
 
-                sh '''
-                docker rm -f $(docker ps -qa) || true
-                docker stop flask-app || echo "flask-app not running"
-                docker stop nginx || echo "nginx not running"
-                docker network create jenk-network || echo "Network already exists"
-                '''
+                sh 'docker rm -f $(docker ps -qa) || true'
+
+                sh 'docker network create jenkins-network || true'
+
             }
 
         }
@@ -22,10 +20,10 @@ pipeline {
 
             steps {
 
-                sh '''
-                docker build -t flask-jenkins .
-                docker build -t nginx-jenkins -f ./nginx
-                '''
+                sh 'docker build -t flask-app .'
+
+                sh 'docker build -t mynginx -f Dockerfile.nginx .'
+
             }
 
         }
@@ -34,9 +32,9 @@ pipeline {
 
             steps {
 
-                sh 'docker run -d --name flask-app --network jenk-network flask-jenkins:latest'
+                sh 'docker run -d --name flask-app --network jenkins-network flask-app:latest'
 
-                sh 'docker run -d -p 80:80 --name nginx --network jenk-network nginx-jenkins:latest'
+                sh 'docker run -d -p 80:80 --name mynginx --network jenkins-network mynginx:latest'
 
             }
 
