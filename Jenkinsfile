@@ -4,20 +4,28 @@ pipeline {
 
     stages {
 
-         stage('Init') {
+        stage('Init') {
 
             steps {
 
+                //if (GIT_BRANCH=main) {
                 sh '''
+                echo "${BRANCH_NAME}"
                 ssh -i ~/.ssh/id_rsa jenkins@10.154.0.27 << EOF
                 docker rm -f $(docker ps -qa) || true
                 docker network create jenkins-network || true
                 '''
+                // }
+                // else if (env=TEST) {
+                // sh '''
+                // ssh -i ~/.ssh/id_rsa jenkins@10.154.0.29 << EOF
+                // docker rm -f $(docker ps -qa) || true
+                // docker network create jenkins-network || true
+                // '''
+                }
 
             }
-
-        }
-
+    //}
         stage('Build') {
 
             steps {
@@ -55,6 +63,12 @@ pipeline {
                 docker run -d --name flask-app --network jenkins-network steoconnor/jenkins-flask:latest
                 docker run -d -p 80:80 --name jenkins-nginx --network jenkins-network steoconnor/jenkins-nginx:latest
                 '''
+
+                // sh '''
+                // ssh -i ~/.ssh/id_rsa jenkins@10.154.0.29 << EOF
+                // docker run -d --name flask-app --network jenkins-network steoconnor/jenkins-flask:latest
+                // docker run -d -p 80:80 --name jenkins-nginx --network jenkins-network steoconnor/jenkins-nginx:latest
+                // '''
 
             }
 
