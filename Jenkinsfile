@@ -22,7 +22,7 @@ pipeline {
 
                 sh 'docker build -t steoconnor/jenkins-flask:latest -t steoconnor/jenkins-flask:v${BUILD_NUMBER} .'
 
-                sh 'docker build -t steoconnor/jenkins-nginx -t steoconnor/jenkins-flask:v${BUILD_NUMBER} ./nginx'
+                sh 'docker build -t steoconnor/jenkins-nginx -t steoconnor/jenkins-nginx:v${BUILD_NUMBER} ./nginx'
 
             }
 
