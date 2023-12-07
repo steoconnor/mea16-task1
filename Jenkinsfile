@@ -10,7 +10,6 @@ pipeline {
 
                 sh '''
                 ssh -i ~/.ssh/id_rsa jenkins@10.154.0.27 << EOF
-                docker rm -f $(docker ps -qa) || true
                 docker network create jenkins-network || true
                 docker stop flask-app || echo "flask-app Not Running"
                 docker stop jenkins-nginx || echo "nginx Not Running"
