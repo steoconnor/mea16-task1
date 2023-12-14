@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                 kubectl apply -f ./kubernetes
-                kubectl set image deployment/flask-deployment task1=steoconnor/flask-jenk:v${BUILD_NUMBER}
+                kubectl set image deployment/flask-deployment task1=steoconnor/jenkins-flask:v${BUILD_NUMBER}
                 '''
             }
         }
