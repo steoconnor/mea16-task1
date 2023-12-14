@@ -24,8 +24,7 @@ pipeline {
             steps {
                 sh '''
                 kubectl apply -f ./kubernetes
-                kubectl rollout restart deployment/flask-deployment
-                kubectl rollout restart deployment/nginx-deployment
+                kubectl set image deployment/flask-deployment task1=steoconnor/flask-jenk:v${BUILD_NUMBER}
                 '''
             }
         }
